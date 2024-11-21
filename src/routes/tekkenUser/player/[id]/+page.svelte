@@ -33,73 +33,15 @@
     stage_id: number,
     winner: number,
     };
-    let battles: Battle[] = json;
+    // let battles: Battle[] = json;
 
     let totalGames=0;
     let totalWins=0;
 
     onMount(async () => {
-        data ={"polaris_id":"5m3qhrAgaHJr",
-        "nickname":"[ED] ybminm",
-        "tekken_power":213492,
-        "highest_rank":23,
-        "last_seen_at":1729593169,
-        "characters":
-        [
-            {
-                "char_id":7,
-                "char_rank":21,
-                "char_highest_rank":23,
-                "char_played_games":272,
-                "char_games_won":118,
-                "last_seen_at":1732105646,
-                "tekken_user_id":"5m3qhrAgaHJr"
-            },
-            {
-                "char_id":8,
-                "char_rank":17,
-                "char_highest_rank":17,
-                "char_played_games":27,
-                "char_games_won":12,
-                "last_seen_at":1731586277,
-                "tekken_user_id":"5m3qhrAgaHJr"
-            },
-            {
-                "char_id":15,
-                "char_rank":16,
-                "char_highest_rank":17,
-                "char_played_games":5,
-                "char_games_won":2,
-                "last_seen_at":1729790256,
-                "tekken_user_id":"5m3qhrAgaHJr"
-            },
-            {
-                "char_id":0,
-                "char_rank":16,
-                "char_highest_rank":16,
-                "char_played_games":3,
-                "char_games_won":2,
-                "last_seen_at":1731587060,
-                "tekken_user_id":"5m3qhrAgaHJr"
-            },
-            {
-                "char_id":40,
-                "char_rank":16,
-                "char_highest_rank":16,
-                "char_played_games":2,
-                "char_games_won":1,
-                "last_seen_at":1729593470,
-                "tekken_user_id":"5m3qhrAgaHJr"
-            }],
-            "nickname_history":[
-                {
-                    "id":137125,
-                    "nickname":"[ED] ybminm",
-                    "last_seen_at":1729593169,
-                    "tekken_user_id":"5m3qhrAgaHJr"
-                }
-            ],
-            "parent_user_id":"12321"};
+        const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}`);
+        data = await res.json();
+        if(res.status === 200){
             mainChar = data.characters
             .sort((a:{char_rank:number, char_played_games:number}, b:{char_rank:number, char_played_games:number},) => {
               if (b.char_rank === a.char_rank) {
@@ -111,19 +53,8 @@
                 totalGames+=char.char_played_games;
                 totalWins+=char.char_games_won;
             })
-            Loading = false;
-            // const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}`);
-            // data = await res.json();
-            // Loading = false;
-        // if(res.status === 200){
-        //     mainChar = data.characters
-        //     .sort((a:{char_rank:number, char_played_games:number}, b:{char_rank:number, char_played_games:number},) => {
-        //       if (b.char_rank === a.char_rank) {
-        //         return b.char_played_games - a.char_played_games;
-        //       }
-        //       return b.char_rank - a.char_rank;
-        //     })[0]
-        // }
+        }
+        Loading = false;
         // const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}/battles?limit=50&skip=0`);
         // battles = await res.json();
     });
@@ -235,7 +166,7 @@
   
     <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="전적" style="width:100px;"/>
     <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-      Tab content 3
+      구현 중
     </div>
   </div>
 

@@ -1,0 +1,95 @@
+.cdx-block,
+.ce-header {
+  background-color: transparent;
+  color: white;
+}
+.inlineToolButton,
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-popover__search {
+  background-color: #262626;
+  color: white;
+}
+
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover,
+.cdx-loader,
+.cdx-button {
+  color: white;
+  background-color: transparent;
+}
+
+.cdx-button:hover {
+  background-color: transparent;
+}
+
+.ce-popover,
+.ce-popover-item,
+.ce-popover-item__icon,
+.ce-popover-items,
+.ce-popover-item:hover {
+  --color-background-item-hover: #262626;
+  background-color: #262626;
+  color: white;
+  border: none;
+}
+.ce-popover__container {
+  background-color: #262626;
+  color: white;
+}
+.ce-popover-item-html {
+  background-color: #262626;
+  color: white;
+  svg {
+    color: white;
+  }
+}
+.cdx-settings-button,
+.cdx-text-variant__toggler {
+  color: white;
+  background-color: #262626;
+  svg {
+    color: white;
+  }
+}
+.ce-block__content {
+  h1 {
+    font-size: xx-large;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: x-large;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: large;
+    font-weight: bold;
+  }
+  h4 {
+    font-size: larger;
+    font-weight: bold;
+  }
+  h5 {
+    font-size: medium;
+    font-weight: bold;
+  }
+  h6 {
+    font-size: medium;
+    font-weight: bold;
+  }
+}
+.cdx-settings-button,
+.cdx-text-variant__toggler {
+  margin-right: 10px;
+  svg {
+    color: white;
+    fill: white;
+  }
+}
+
+.tc-popover__item {
+  color: #262626;
+}
+.ce-popover-header {
+  color: white;
+}

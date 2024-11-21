@@ -1,0 +1,29 @@
+/* ...existing code... */
+
+.special-char {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.ce-fgc__textarea {
+  color: aliceblue;
+}
+
+.ce-fgc__svg-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  height: fit-content;
+  padding: 10px;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  font-weight: bold;
+}
+/* ...existing code... */

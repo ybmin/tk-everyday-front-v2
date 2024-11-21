@@ -46,6 +46,7 @@
     "@editorjs/embed": "^2.7.6",
     "@editorjs/simple-image": "^1.6.0",
     "@editorjs/table": "^2.4.2",
+    "@sveltejs/adapter-node": "^5.2.9",
     "editorjs-drag-drop": "^1.1.16",
     "editorjs-header-with-anchor": "^2.6.0",
     "editorjs-multiblock-selection-plugin": "^0.1.1"

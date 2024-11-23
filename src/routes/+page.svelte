@@ -4,7 +4,7 @@
     import  TekkenUser  from "$lib/components/TekkenUser.svelte";
     let spacing = 0;
     import { onMount } from 'svelte';
-  import SteamLogo from "../assets/steam_logo.svelte";
+    import SteamLogo from "../assets/steam_logo.svelte";
 
     onMount(() => {
         const handleScroll = () => {

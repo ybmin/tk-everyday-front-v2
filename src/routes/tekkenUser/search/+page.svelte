@@ -1,0 +1,72 @@
+<script lang="ts">
+    let searchQuery = '';
+    let filteredItems:{"nickname": string, "polaris_id": string, "tekken_power": number, "last_seen_at": number, "parent_user_id":string|undefined}[] = [];
+    let apiItems:{"nickname": string, "polaris_id": string, "tekken_power": number, "last_seen_at": number, "parent_user_id":string|undefined}[] = [];
+    let hasFetched = false;
+
+    async function fetchItems(query: string) {
+        const response = await fetch(`https://api.tk-everyday.site/tekken_user/nickname/${query}`);
+        apiItems = await response.json();
+    }
+
+    $: if (searchQuery.length >= 3 && !hasFetched) {
+        fetchItems(searchQuery);
+        hasFetched = true;
+    };
+
+    $: if (searchQuery.length < 3) {
+        apiItems = [];
+        filteredItems = [];
+        hasFetched = false;
+    };
+
+    $: filteredItems = apiItems.filter(item =>
+        item.nickname.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+</script>
+
+<div class="w-full content-center my-28">
+    <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
+        <label class="input input-bordered flex items-center gap-2" >
+            <input type="text" class="grow" placeholder="검색어를 입력하세요" bind:value={searchQuery}/>
+            <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-4 w-4 opacity-70">
+            <path
+                fill-rule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clip-rule="evenodd" />
+            </svg>
+        </label>
+
+        <div class="overflow-x-auto">
+            <table class="table w-full min-w-full">
+                <thead>
+                    <tr>
+                    <th class="whitespace-normal">닉네임</th>
+                    <th class="whitespace-normal">Tekken Power</th>
+                    <th class="whitespace-normal">최근 접속</th>
+                    <th class="whitespace-normal">연동 유저</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each filteredItems as item}
+                    <tr>
+                        <th class="whitespace-normal">
+                            <a href={`/tekkenUser/player/${item.polaris_id}`}>
+                                <div class="font-bold">{item.nickname}</div>
+                                <div class="text-sm opacity-50">{item.polaris_id}</div>
+                            </a>
+                        </th>
+                        <td class="whitespace-normal">{item.tekken_power}</td>
+                        <td class="whitespace-normal">{new Date(item.last_seen_at * 1000).toLocaleString("ko-KR")}</td>
+                        <td class="whitespace-normal">{item.parent_user_id ? item.parent_user_id : "연동 없음"}</td>
+                    </tr>
+                    {/each}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

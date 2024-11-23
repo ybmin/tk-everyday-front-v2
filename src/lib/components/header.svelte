@@ -26,6 +26,7 @@
           tabindex="0"
           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[50] mt-3 w-52 p-2 shadow">
           <li><a href="/info">정보</a></li>
+          <li><a href="/tekkenUser/search">유저 검색</a></li>
           <li>
             <details>
               <summary>블로그</summary>
@@ -68,6 +69,7 @@
             </ul>
           </details>
         </li>
+        <li><a href="/tekkenUser/search">유저 검색</a></li>
         <!-- <li><a>Item 3</a></li> -->
       </ul>
     </div>

@@ -187,7 +187,7 @@
         </h2>
         <p class="text-base-content/70 font-title py-4 font-light md:text-2xl">카카오 연동 로그인만을 지원하기에, 다중 계정 생성을 방지하고, <br/> 스팀 로그인을 통한 철권 계정 인증이 가능합니다. </p>
         <p class="text-base-content/70 font-title py-4 font-bold md:text-sm">(*철권 계정 연동은 tekken net과 같은 지원종료된 사이트 제외 기준)</p>
-        <a class="btn btn-primary btn-lg mt-10" href="/signin">지금 가입하기 →</a>
+        <a class="btn btn-primary btn-lg mt-10" href="/signup">지금 가입하기 →</a>
     </div>
 </div>
 <div class="md:container md:mx-auto py-2 text-left mb-24 mt-96">

@@ -1,5 +1,7 @@
 <script>
     import SteamLogo from "../../../assets/steam_logo.svelte";
+    async function handleClick() {
+    }
 </script>
 
 <ul class="steps mx-auto w-full mb-24 mt-10">
@@ -12,7 +14,7 @@
 <div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <h2 >(선택) 철권 계정 연동</h2>
-        <a href="https://api.tk-everyday.site/auth/link/steam" class="bg-black text-white btn btn-lg ">
+        <a on:click={handleClick} class="bg-black text-white btn btn-lg ">
             <SteamLogo className="w-6"/> 스팀 계정 연동하기</a>
         <span class="text-base-content/70 py-4 font-light md:text-base">스팀 계정을 연동하면, 철권 계정을 인증할 수 있습니다.</span>
         <div class="divider">or</div>

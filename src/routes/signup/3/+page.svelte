@@ -1,31 +1,67 @@
 <script>
 // @ts-nocheck
-
+  import {onMount} from "svelte";
   import { apiRequest } from "$lib/utils/api";
 
   let nickname = '';
   let email = '';
   let password = '';
 
+  onMount(async () => {
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    if (accessToken && refreshToken) {
+      localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
+      const url = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, url);
+    }
+  });
   async function handleSubmit() {
     const data = { nickname, email, password };
 
     try {
-      const response = await apiRequest('https://api.tk-everyday.site/auth/link/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('https://api.tk-everyday.site/auth/link/email', {
+        headers: { 
+          'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         // Handle success, e.g., redirect
-      } else {
+      } else if(response.code === 401) {
+        // Handle unauthorized
+        const response = await fetch('https://api.tk-everyday.site/token/refresh', {
+          headers: { 
+            'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+          },
+          body: {
+            'refresh_token': localStorage.getItem('refresh_token')
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('refresh_token', data.refresh_token);
+          return handleSubmit();
+        } else{
+          alert('로그인이 필요합니다.');
+          window.location.href = '/login';
+        }
+      } 
+      else {
         // Handle error
       }
+      window.location.href = '/signup/4';
     } catch (error) {
-      console.error('Error:', error);
+      alert('로그인이 필요합니다.');
+      window.location.href = '/login';
     }
-    window.location.href = '/signup/4';
   }
 </script>
 

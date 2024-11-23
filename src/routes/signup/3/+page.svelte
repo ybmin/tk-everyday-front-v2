@@ -1,0 +1,103 @@
+<script>
+// @ts-nocheck
+
+  import { apiRequest } from "$lib/utils/api";
+
+  let nickname = '';
+  let email = '';
+  let password = '';
+
+  async function handleSubmit() {
+    const data = { nickname, email, password };
+
+    try {
+      const response = await apiRequest('https://api.tk-everyday.site/auth/link/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., redirect
+      } else {
+        // Handle error
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    window.location.href = '/signup/4';
+  }
+</script>
+
+<ul class="steps mx-auto w-full mb-24 mt-10">
+    <li class="step step-primary">회원가입</li>
+    <li class="step step-primary">카카오 로그인</li>
+    <li class="step step-primary">기본 정보 입력</li>
+    <li class="step ">(선택) 철권 계정 연동</li>
+    <li class="step">회원가입 완료</li>
+  </ul>
+<div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
+    <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
+        <h2 >기본 정보 입력</h2>
+
+        <form on:submit|preventDefault={handleSubmit} class="form-control gap-8">
+          <label class="input input-bordered flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              class="h-4 w-4 opacity-70">
+              <path
+                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+            </svg>
+            <input type="text" class="grow" placeholder="Nickname" on:change={(e)=>{
+              nickname = e.target.value;
+            }}
+            value={nickname}
+            />
+          </label>
+          <label class="input input-bordered flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              class="h-4 w-4 opacity-70">
+              <path
+                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+            </svg>
+            <input type="email" class="grow" placeholder="Email" on:change={(e)=>{
+              email = e.target.value;
+            }}
+            value={email}
+            />
+          </label>
+          <label class="input input-bordered flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              class="h-4 w-4 opacity-70">
+              <path
+                fill-rule="evenodd"
+                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                clip-rule="evenodd" />
+            </svg>
+            <input type="password" class="grow" placeholder="Password" on:change={(e)=>{
+              password = e.target.value;
+            }}
+            value={password}
+            />
+          </label>
+          <button type="submit" class="btn btn-primary">다음</button>
+        </form>
+
+        <!-- <div class="divider">Q&A</div>
+        <div class="collapse collapse-plus bg-base-200">
+            <input type="radio" name="my-accordion-3" />
+            <div class="collapse-title text-xl font-medium">왜 카카오로의 로그인만 가능한가요? </div>
+            <div class="collapse-content">
+              <p>1인 다중 계정 생성을 방지하기 위해 현재 카카오 연동을 통한 계정 생성만을 지원하고 있습니다.</p>
+            </div>
+          </div> -->
+    </div>
+</div>

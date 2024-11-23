@@ -29,6 +29,9 @@ dependencies:
   editorjs-multiblock-selection-plugin:
     specifier: ^0.1.1
     version: 0.1.1
+  svelte-routing:
+    specifier: ^2.13.0
+    version: 2.13.0
 
 devDependencies:
   '@editorjs/delimiter':
@@ -4002,6 +4005,10 @@ packages:
     transitivePeerDependencies:
       - picomatch
     dev: true
+
+  /svelte-routing@2.13.0:
+    resolution: {integrity: sha512-/NTxqTwLc7Dq306hARJrH2HLXOBtKd7hu8nxgoFDlK0AC4SOKnzisiX/9m8Uksei1QAWtlAEdF91YphNM8iDMg==}
+    dev: false
 
   /svelte@5.2.0:
     resolution: {integrity: sha512-LOowFhMB0CoTzDsa90snaICFMftrxKlYsOhH4YP1AamjCSDBZvtDq0yB5QY8LJA1tFftcmpAhmLCK/gAOFNrtw==}

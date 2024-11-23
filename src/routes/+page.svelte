@@ -164,10 +164,10 @@
 
 <div class="relative flex flex-col items-center justify-center gap-10 px-4 md:px-10 xl:flex-row xl:gap-20 mt-96">
     <div class="md:container py-2 mb-10">
-        <button class="bg-[#FFEB00] text-[#3C1E1E] btn btn-lg " style="transition: 2s;">
+        <button class="bg-[#FFEB00] text-[#3C1E1E] btn btn-lg hover:bg-[#e6d700] " style="transition: 2s;">
             <KakaoLogo width={20}/> 카카오로 로그인</button>
         <button class="bg-black text-white btn btn-lg " style="transition: 2s;">
-            <SteamLogo className={"w-6 "}/> 스팀으로 연동</button>
+            <SteamLogo className={"w-6"}/> 스팀으로 연동</button>
     </div>
     <div class="md:container md:mx-auto py-2 text-left mb-24">
         <h2 class="font-title relative z-[2] mx-auto my-1 font-black leading-none will-change-auto text-5xl ">
@@ -200,6 +200,7 @@
         <!-- Add more members as needed -->
     </div>
 </div>
+
 
 
 <style>

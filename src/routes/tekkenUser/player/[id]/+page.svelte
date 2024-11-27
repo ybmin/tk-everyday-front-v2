@@ -3,11 +3,10 @@
     import {charData} from "$lib/components/TekkenChar";
     import {rankData} from "$lib/components/TekkenRank";
     import { onMount } from 'svelte';
-    import {json} from "./test";
   import TekkenChar from "$lib/components/TekkenChar.svelte";
   import TekkenRank from "$lib/components/TekkenRank.svelte";
 
-    let polarisId:string = $page.params.id;
+    let polarisId = $page.params.id;
     
     let data: {characters: any[], nickname: string,tekken_power: number, polaris_id: string, highest_rank: number, last_seen_at: number, nickname_history: any[], parent_user_id: string|null};
     let Loading = true;
@@ -33,36 +32,72 @@
     stage_id: number,
     winner: number,
     };
-    // let battles: Battle[] = json;
+    let battles: Battle[] = [];
+
+    let currentPage = 0;
+    let loadedPage = 0;
+    let maxPage = Infinity;
+    let currentBattles: Battle[];
+    let loadMatch = true;
 
     let totalGames=0;
     let totalWins=0;
 
     onMount(async () => {
-        const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}`);
-        data = await res.json();
-        if(res.status === 200){
-            mainChar = data.characters
-            .sort((a:{char_rank:number, char_played_games:number}, b:{char_rank:number, char_played_games:number},) => {
-              if (b.char_rank === a.char_rank) {
-                  return b.char_played_games - a.char_played_games;
-              }
-              return b.char_rank - a.char_rank;
-            })[0]
-            data.characters.forEach((char)=>{
-                totalGames+=char.char_played_games;
-                totalWins+=char.char_games_won;
-            })
+            Loading = true;
+            const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}`);
+            data = await res.json();
+            if(res.status === 200){
+                mainChar = data.characters
+                .sort((a:{char_rank:number, char_played_games:number}, b:{char_rank:number, char_played_games:number},) => {
+                  if (b.char_rank === a.char_rank) {
+                      return b.char_played_games - a.char_played_games;
+                  }
+                  return b.char_rank - a.char_rank;
+                })[0]
+                data.characters.forEach((char)=>{
+                    totalGames += char.char_played_games;
+                    totalWins += char.char_games_won;
+                })
+            }
+            Loading = false;
+        });
+
+    onMount(async()=>{
+        await  fetchMatchData();
+    })
+    const fetchMatchData = async()=>{
+        loadMatch  =true;
+        const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}/battles?limit=50&skip=${currentPage*50}`);
+        if( res.status !== 200){
+            currentPage--;
+            maxPage = currentPage;
+            loadMatch = false;
+            return;
         }
-        Loading = false;
-        // const res = await fetch(`https://api.tk-everyday.site/tekken_user/${polarisId}/battles?limit=50&skip=0`);
-        // battles = await res.json();
-    });
+        currentBattles = await res.json();
+        battles = [...battles, ...currentBattles];
+        loadedPage = currentPage;
+        maxPage = Infinity;
+        loadMatch = false;
+    }
+
 </script>
 
 
 {#if Loading}
-    <p>Loading...</p>
+<div class="flex w-full flex-col gap-4 mx-10 my-20">
+    <div class="flex items-center gap-4">
+      <div class="skeleton h-48 w-48 shrink-0 rounded-full"></div>
+      <div class="flex flex-col gap-10">
+        <div class="skeleton h-10 w-full"></div>
+        <div class="skeleton h-10 w-full"></div>
+        <div class="skeleton h-10 w-full"></div>
+        <div class="skeleton h-10 w-full"></div>
+      </div>
+    </div>
+    <div class="skeleton h-32 w-full"></div>
+  </div>
 {:else}
 <div class="tekken-user-profile-default-container">
     <div>
@@ -92,7 +127,7 @@
 <div class="stats shadow ">
     <div class="stat">
       <div class="stat-figure text-secondary">
-        <div class="radial-progress text-primary" style="--value:{(totalWins/totalGames*100).toFixed(0)};" role="progressbar">{(totalWins/totalGames*100).toFixed(1)}%</div>
+        <div class="radial-progress text-secondary" style="--value:{(totalWins/totalGames*100).toFixed(0)};" role="progressbar">{(totalWins/totalGames*100).toFixed(1)}%</div>
       </div>
       <div class="stat-title">승수 / 전적</div>
       <div class="stat-value text-secondary">{totalWins} / {totalGames}</div>
@@ -102,14 +137,14 @@
 
 <div class="stats shadow">
     <div class="stat">
-      <div class="stat-figure text-secondary">
+      <div class="stat-figure text-primary">
         <div class="avatar online">
             <TekkenChar char={mainChar.char_id} />
         </div>
       </div>
       <div class="stat-value">{(mainChar.char_games_won/mainChar.char_played_games*100).toFixed(2)}%</div>
       <div class="stat-title">{charData[mainChar.char_id].name} 승률</div>
-      <div class="stat-desc text-secondary">{mainChar.char_games_won}승</div>
+      <div class="stat-desc text-primary">{mainChar.char_games_won}승</div>
     </div>
 </div>
 <div class="stats shadow ">
@@ -131,7 +166,7 @@
         <div class="stats shadow">
             <div class="stat">
             <div class="stat-figure text-secondary">
-                <div class="avatar online">
+                <div class="avatar">
                     <TekkenChar char={character.char_id} />
                 </div>
             </div>
@@ -165,77 +200,153 @@
     </div>
   
     <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="전적" style="width:100px;"/>
-    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-      구현 중
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6 overflow-x-auto">
+        {#if loadMatch}
+            <div class="flex w-full flex-col gap-4 mx-10 my-10">                
+                <div class="skeleton h-6 w-full"></div>
+                <div class="skeleton h-6 w-full"></div>
+                <div class="skeleton h-6 w-full"></div>
+                <div class="skeleton h-6 w-full"></div>
+                <div class="skeleton h-6 w-full"></div>
+                <div class="skeleton h-6 w-full"></div>
+            </div>
+        {:else}
+        <div class="overflow-x-auto mb-4">
+            <table class="table">
+              <!-- head -->
+              <thead>
+                <tr>
+                  <th>본인</th>
+                  <th>결과</th>
+                  <th>상대</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {#each currentBattles as battle}
+                {#if battle.p1_polaris_id === data.polaris_id}
+                <tr>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="avatar">
+                                <div class="mask mask-squircle h-12 w-12">
+                                    <TekkenChar char={battle.p1_chara_id.toString()} size="60" />
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold">{battle.p1_name}</div>
+                                <div class="text-sm">
+                                    <TekkenRank rank={battle.p1_rank.toString()} width="40px"/>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td >
+                        <span class="{battle.winner === 1 ? "text-green-600":"text-red-600"} font-bold">{battle.p1_rounds}</span> : <span class="{battle.winner === 2 ? "text-green-600":"text-red-600"} font-bold">{battle.p2_rounds}</span>
+                        <br />
+                        <span class="badge badge-ghost badge-sm font-light">{new Date(battle.battle_at*1000).toLocaleString("ko-KR")}</span>
+                    </td>
+                    <td>
+                        <a class="flex items-center gap-3" rel="external" href="/tekkenUser/player/{battle.p2_polaris_id}">
+                            <div class="avatar">
+                                <div class="mask mask-squircle h-12 w-12">
+                                    <TekkenChar char={battle.p2_chara_id.toString()} size="60"/>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold">{battle.p2_name}</div>
+                                <div class="text-sm">
+                                    <TekkenRank rank={battle.p2_rank.toString()} width="40px"/>
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                        <th>
+                            <div class="badge badge-outline ">
+                                v.{battle.game_version.toString().replaceAll("0", ".")}</div>
+                            <!-- <button class="btn btn-ghost btn-xs">details</button> -->
+                            </th>
+                        </tr>
+                    {:else}
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <TekkenChar char={battle.p2_chara_id.toString()} size="60" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">{battle.p2_name}</div>
+                                    <div class="text-sm">
+                                        <TekkenRank rank={battle.p2_rank.toString()} width="40px"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="font-bold">
+                            <span class="{battle.winner === 2 ? "text-green-600":"text-red-600"}">{battle.p2_rounds}</span> : <span class="{battle.winner === 1 ? "text-green-600":"text-red-600"}">{battle.p1_rounds}</span>
+                            <br />
+                            <span class="badge badge-ghost badge-sm font-light">{new Date(battle.battle_at*1000).toLocaleString("ko-KR")}</span>
+                        </td>
+                        <td>
+                            <a class="flex items-center gap-3" rel="external" href="/tekkenUser/player/{battle.p1_polaris_id}">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <TekkenChar char={battle.p1_chara_id.toString()} size="60"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">{battle.p1_name}</div>
+                                    <div class="text-sm">
+                                        <TekkenRank rank={battle.p1_rank.toString()} width="40px"/>
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+                            <th>
+                                <div class="badge badge-outline ">
+                                    v.{battle.game_version.toString().replaceAll("0", ".")}</div>
+                                <!-- <button class="btn btn-ghost btn-xs">details</button> -->
+                                </th>
+                            </tr>
+                        {/if}
+                {/each}
+            </tbody>
+            <!-- foot -->
+        </table>
     </div>
+    {/if}
+        <div class="join grid grid-cols-2 mx-10">
+            <button class="join-item btn btn-outline" disabled={currentPage === 0} on:click={()=>{
+                currentPage--;
+                currentBattles = battles.slice(currentPage*50, currentPage*50+50);
+            }}>이전</button>
+            <button class="join-item btn btn-outline" on:click={()=>{
+                currentPage++;
+                if(currentPage>loadedPage){
+                    fetchMatchData();
+                }else{
+                    currentBattles = battles.slice(currentPage*50, currentPage*50+50);
+                }
+            }}
+            disabled={currentPage === maxPage}
+            >다음</button>
+          </div>
+    </div>
+    
+    <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="통계" style="width:100px;"/>
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6 overflow-x-auto">
+        <!-- 
+        이번달 판수, 승수, 승률, 캐릭터별 승률, 스테이지별 승률, 철찌력
+        지난달 판수, 승수, 승률, 캐릭터별 승률, 스테이지별 승률, 철찌력
+        전체 판수, 승수, 승률, 캐릭터별 승률, 스테이지별 승률, 철찌력
+        -->
+    </div>
+
   </div>
+  
 
-<!-- {#if data.parent_user_id}
-    <div class="tekken-user-profile-nickname-container">
-        <h5 >ED User ID: <p onclick={()=>{
-            //TODO: USER ID LINK
-        }}>{data.parent_user_id}</p></h5>
-    </div>
-    {/if} -->
-<!-- 
-<Tabs tabStyle="underline" 
-contentClass="p-4 bg-transparent rounded-lg mt-4"
-activeClasses="bg-primary-500 text-white"
->
-    <TabItem open title="닉네임 이력">
-
-<div class="tekken-user-profile-nickname-container">
-    {#each data.nickname_history as nickname}
-    <div>
-        <h5 tag="h6">{nickname.nickname}</h5>
-        <p>마지막 접속: {new Date(nickname.last_seen_at*1000).toLocaleString("ko-KR")}</p>
-    </div>
-    {/each}
-</div>
-    </TabItem>
-    <TabItem title="캐릭터 정보">
-<div class="tekken-user-profile-character-container">
-    {#each data.characters as character}
-    <div>
-        <h5 tag="h6">{charData[character.char_id].name}</h5>
-        <p>랭크: {rankData[character.char_rank].name}</p>
-        <p>최고랭크: {rankData[character.char_highest_rank].name}</p>
-        <p>승리/총 게임: {character.char_games_won} / {character.char_played_games} = {(character.char_games_won * 100 / character.char_played_games).toPrecision(4)}%</p>
-        <p>마지막 접속: {new Date(character.last_seen_at*1000).toLocaleString("ko-KR")}</p>
-    </div>
-    {/each}
-</div>
-    </TabItem>
-    <TabItem title="랭크 게임">       
-        <Table hoverable={true}>
-            <TableHead>
-            <TableHeadCell >일시</TableHeadCell>
-            <TableHeadCell >나의 캐릭터</TableHeadCell>
-            <TableHeadCell >나의 랭크</TableHeadCell>
-            <TableHeadCell >라운드</TableHeadCell>
-            <TableHeadCell >상대 닉네임</TableHeadCell>
-            <TableHeadCell >상대 캐릭터</TableHeadCell>
-            <TableHeadCell >상대 랭크</TableHeadCell>
-            <TableHeadCell >게임 버전</TableHeadCell>
-            </TableHead>
-            <TableBody tableBodyClass="divide-y">
-                {#each battles as item}
-            <TableBodyRow>
-                <TableBodyCell>{new Date(item.battle_at*1000).toLocaleString("ko-KR")}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p1_polaris_id)? charData[item.p1_chara_id].name :charData[item.p2_chara_id].name}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p1_polaris_id)? rankData[item.p1_rank].name :rankData[item.p2_rank].name}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p1_polaris_id)? item.p1_rounds +" : "+item.p2_rounds:item.p2_rounds +" : "+item.p1_rounds}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p2_polaris_id)? item.p1_name :item.p2_name}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p2_polaris_id)? charData[item.p1_chara_id].name :charData[item.p2_chara_id].name}</TableBodyCell>
-                <TableBodyCell>{(polarisId === item.p2_polaris_id)? rankData[item.p1_rank].name :rankData[item.p2_rank].name}</TableBodyCell>
-                <TableBodyCell>
-                    v.{item.game_version.toString().replaceAll("0", ".")}</TableBodyCell>
-            </TableBodyRow>
-            {/each}
-            </TableBody>
-        </Table>
-    </TabItem>
-</Tabs> -->
 {/if} 
 <!-- 5m3qhrAgaHJr -->
 
@@ -248,24 +359,4 @@ activeClasses="bg-primary-500 text-white"
         flex-direction: row;
         gap: 1rem;
     }
-    .tekken-user-profile-nickname-container{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    /* .tekken-user-profile-character-container{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    } */
 </style>

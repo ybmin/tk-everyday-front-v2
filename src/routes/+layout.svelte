@@ -5,6 +5,9 @@
     import { page } from "$app/stores";
 </script>
 
+<svelte:head>
+    <title>Tekken EveryDay</title> 
+</svelte:head>
 {#if !$page.url.pathname.startsWith('/tekkenUser/iframe/') && !$page.url.pathname.startsWith('/tekkenMatch/')}
     <Header></Header>
 {/if}

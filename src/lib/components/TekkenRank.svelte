@@ -7,6 +7,6 @@
 <img
     src={rankData[rank].src}
     alt={rankData[rank].name}
-    class="tekken-rank"
-    style={`width: ${width}; height:auto;`}
+    class="tekken-rank my-1"
+    style={`width: ${width}; `}
 />

@@ -1,7 +1,8 @@
 <script lang="ts">
     let searchQuery = '';
-    let filteredItems:{"nickname": string, "polaris_id": string, "tekken_power": number, "last_seen_at": number, "parent_user_id":string|undefined}[] = [];
-    let apiItems:{"nickname": string, "polaris_id": string, "tekken_power": number, "last_seen_at": number, "parent_user_id":string|undefined}[] = [];
+    type QueryTekkenUser = {"nickname": string, "polaris_id": string, "tekken_power": number, "last_seen_at": number, "parent_user_id":string|undefined};
+    let filteredItems:QueryTekkenUser[] = [];
+    let apiItems:QueryTekkenUser[] = [];
     let hasFetched = false;
 
     async function fetchItems(query: string) {
@@ -27,8 +28,8 @@
 
 <div class="w-full content-center my-28">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
-        <label class="input input-bordered flex items-center gap-2" >
-            <input type="text" class="grow" placeholder="검색어를 입력하세요" bind:value={searchQuery}/>
+        <form class="input input-bordered flex items-center gap-2" on:submit|preventDefault={()=>fetchItems(searchQuery)}>
+            <input type="text" class="grow" placeholder="검색어를 입력하세요" bind:value={searchQuery} />
             <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -39,7 +40,7 @@
                 d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                 clip-rule="evenodd" />
             </svg>
-        </label>
+        </form>
 
         <div class="overflow-x-auto">
             <table class="table w-full min-w-full">

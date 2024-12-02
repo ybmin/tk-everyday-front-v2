@@ -77,7 +77,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
 export async function apiUpdateUser() {
   const access_token = getAccessToken();
-  const response = await fetch("https://api.tk-everyday.site/user/me", {
+  const response = await fetch("https://api.tk-everyday.site/users/me", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

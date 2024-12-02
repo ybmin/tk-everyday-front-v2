@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import {setTokens} from "$lib/utils/auth";
+    import {apiUpdateUser} from "$lib/utils/api";
 
     onMount(async () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -10,6 +11,7 @@
             setTokens(accessToken, refreshToken);
             const url = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, url);
+            apiUpdateUser();
             setTimeout(() => {
                 window.location.href = '/';
             }, 3000);

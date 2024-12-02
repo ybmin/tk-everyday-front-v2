@@ -1,10 +1,15 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import {currentUser, fetchCurrentUser} from '$lib/stores/auth';
+    import {setTokens} from "$lib/utils/auth";
 
     onMount(async () => {
-        await fetchCurrentUser();
-        if ($currentUser) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('access_token');
+        const refreshToken = urlParams.get('refresh_token');
+        if (accessToken && refreshToken) {
+            setTokens(accessToken, refreshToken);
+            const url = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, url);
             setTimeout(() => {
                 window.location.href = '/';
             }, 3000);

@@ -1,5 +1,11 @@
 <script>
     import SteamLogo from "../../../assets/steam_logo.svelte";
+    import {onMount} from "svelte";
+    import { apiUpdateUser } from "$lib/utils/api";
+
+    onMount(()=>{
+        apiUpdateUser();
+    })
 </script>
 
 <ul class="steps mx-auto w-full mb-24 mt-10">

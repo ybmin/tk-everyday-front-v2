@@ -2,6 +2,7 @@
 // @ts-nocheck
   import {onMount} from "svelte";
   import { apiRequest } from "$lib/utils/api";
+  import { setTokens } from "$lib/utils/auth";
 
   let nickname = '';
   let email = '';
@@ -12,8 +13,7 @@
     const accessToken = params.get('access_token');
     const refreshToken = params.get('refresh_token');
     if (accessToken && refreshToken) {
-      localStorage.setItem('access_token', accessToken);
-      localStorage.setItem('refresh_token', refreshToken);
+      setTokens(accessToken, refreshToken);
       const url = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, url);
     }
@@ -22,41 +22,7 @@
     const data = { nickname, email, password };
 
     try {
-      const response = await fetch('https://api.tk-everyday.site/auth/link/email', {
-        headers: { 
-          'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-         },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        // Handle success, e.g., redirect
-      } else if(response.code === 401) {
-        // Handle unauthorized
-        const response = await fetch('https://api.tk-everyday.site/token/refresh', {
-          headers: { 
-            'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-          },
-          body: {
-            'refresh_token': localStorage.getItem('refresh_token')
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem('access_token', data.access_token);
-          localStorage.setItem('refresh_token', data.refresh_token);
-          return handleSubmit();
-        } else{
-          alert('로그인이 필요합니다.');
-          window.location.href = '/login';
-        }
-      } 
-      else {
-        // Handle error
-      }
+      const response = await apiRequest('https://api.tk-everyday.site/auth/link/email', 'POST', JSON.stringify(data));
       window.location.href = '/signup/4';
     } catch (error) {
       alert('로그인이 필요합니다.');

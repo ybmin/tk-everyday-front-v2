@@ -1,7 +1,14 @@
 <script lang="ts">
     import WideLogo from "../../assets/tk_ed_logo_wide.svelte";
-    
+    import {getUser
+    } from "$lib/utils/user";
+    import type {User} from "$lib/utils/user";
+    import {onMount} from "svelte";
 
+    let user: User | null = null;
+    onMount(async () => {
+      user = getUser();
+    });
    
 </script>
 
@@ -74,7 +81,11 @@
       </ul>
     </div>
     <div class="navbar-end">
-        <a class="btn btn-active btn-primary" href="/login">로그인</a>
+      {#if user && user.nickname}
+        <a class="btn btn-active btn-secondary" href="/profile">{user?.nickname}</a>
+      {:else}
+      <a class="btn btn-active btn-primary" href="/login">로그인</a>
+      {/if}
         <div class="dropdown dropdown-end hidden lg:flex">
             <div tabindex="0" role="button" class="btn m-1">
             테마

@@ -47,7 +47,7 @@
       
       onMount(async () => {
         Loading = true;
-        const userRes = await fetch(`https://api.tk-everyday.site/users/${userId}`);
+        const userRes = await fetch(`https://api.tk-everyday.site/user/${userId}`);
         if(userRes.status === 200){
             user = await userRes.json() as User;
             const res = await fetch(`https://api.tk-everyday.site/tekken_user/${user.polaris_id}`);

@@ -71,7 +71,7 @@
                         <td class="whitespace-normal">{item.tekken_power}</td>
                         <td class="whitespace-normal">{new Date(item.last_seen_at * 1000).toLocaleString("ko-KR")}</td>
                         <td class="whitespace-normal">
-                            {#if !item.parent_user_id}
+                            {#if item.parent_user_id}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="size-5 fill-primary">
                                     <path fill-rule="evenodd" d="M16.403 12.652a3 3 0 0 0 0-5.304 3 3 0 0 0-3.75-3.751 3 3 0 0 0-5.305 0 3 3 0 0 0-3.751 3.75 3 3 0 0 0 0 5.305 3 3 0 0 0 3.75 3.751 3 3 0 0 0 5.305 0 3 3 0 0 0 3.751-3.75Zm-2.546-4.46a.75.75 0 0 0-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
                                 </svg>

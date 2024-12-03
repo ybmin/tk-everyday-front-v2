@@ -12,7 +12,7 @@
 <div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <h2 >회원가입</h2>
-        <a href="https://api.tk-everyday.site/auth/kakao" class="btn bg-[#FFEB00] text-[#3C1E1E] hover:bg-[#e6d700]">
+        <a href="https://api.tk-everyday.site/auth/kakao" target="_self" class="btn bg-[#FFEB00] text-[#3C1E1E] hover:bg-[#e6d700]">
             <KakaoLogo width={20}/> 카카오로 회원가입</a>
         <h4>계정이 있으신가요?  <a href="/login" style="text-decoration:underline; color:white; ">로그인</a></h4>
         <div class="divider">Q&A</div>

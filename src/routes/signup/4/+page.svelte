@@ -1,5 +1,15 @@
-<script>
+<script lang="ts">
     import SteamLogo from "../../../assets/steam_logo.svelte";
+    import {getAccessToken} from "$lib/utils/auth";
+    import {onMount} from "svelte";
+
+    let token:string|null = null;
+    onMount(async () => {
+        token = getAccessToken();
+        if (!token) {
+            window.location.href = "/login";
+        }
+    });
 </script>
 
 <ul class="steps mx-auto w-full mb-24 mt-10">
@@ -12,9 +22,11 @@
 <div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <h2 >(선택) 철권 계정 연동</h2>
-        <a class="bg-black text-white btn btn-lg" href="https://api.tk-everyday.site/auth/steam" target="_blank" rel="noopener noreferrer">
+        {#if token}
+        <a class="bg-black text-white btn btn-lg" href={`https://api.tk-everyday.site/auth/steam?token=${token}`} target="_blank" rel="noopener noreferrer">
             <SteamLogo className="w-6"/> 스팀 계정 연동하기</a>
-        <span class="text-base-content/70 py-4 font-light md:text-base">스팀 계정을 연동하면, 철권 계정을 인증할 수 있습니다.</span>
+        {/if}
+            <span class="text-base-content/70 py-4 font-light md:text-base">스팀 계정을 연동하면, 철권 계정을 인증할 수 있습니다.</span>
         <div class="divider">or</div>
         <a class="btn btn-primary btn-lg mt-10" href="/signup/5">건너뛰기 →</a>
         <!-- <div class="divider">Q&A</div>

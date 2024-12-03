@@ -16,8 +16,11 @@
       if (response?.status === 200) {
         alert("철권 계정 연동이 완료되었습니다.");
         window.location.href = '/signup/5';
-      } else {
+      } else if(response?.status === 400) {
         alert("철권 계정 연동에 실패했습니다.");
+      }
+      else{
+        window.location.href = '/signup/5';
       }
     }
   }

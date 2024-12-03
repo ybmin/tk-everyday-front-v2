@@ -19,9 +19,25 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
       },
     }); // 서버에서 401 응답 시 로그인 페이지로 리디렉션
     if (response.status === 401) {
-      clearTokens();
-      window.location.href = "/login";
-      throw new Error("Unauthorized");
+      const response = await fetch(
+        "https://api.tk-everyday.site/token/refresh",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTokens(data.access_token, data.refresh_token);
+        return apiRequest(endpoint, options);
+      } else {
+        clearTokens();
+        window.location.href = "/login";
+        throw new Error("다시 로그인해주세요.");
+      }
     }
     return response;
   }
@@ -35,7 +51,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
     });
     if (response.ok) {
       const data = await response.json();
-      setTokens(data.access_token, refreshToken);
+      setTokens(data.access_token, data.refreshToken);
       return apiRequest(endpoint, options);
     } else {
       clearTokens();
@@ -64,7 +80,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
       );
       if (response.ok) {
         const data = await response.json();
-        setTokens(data.access_token, refreshToken);
+        setTokens(data.access_token, data.refreshToken);
         return apiRequest(endpoint, options);
       } else {
         clearTokens();

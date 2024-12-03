@@ -50,6 +50,9 @@
       await apiUpdateUser();
       user = getUser();
       if (user) {
+        if(user.nickname === "") {
+          window.location.href = "/signup/3";
+        }
         const res = await fetch(`https://api.tk-everyday.site/tekken_user/${user.polaris_id}`);
         data = await res.json();
         if(res.status === 200){
@@ -68,6 +71,7 @@
         Loading = false;
         await fetchMatchData();
       }
+      Loading = false;
     });
 </script>
 
@@ -119,7 +123,9 @@
       </div>
   
 {/if}
-
+{#if user && user.polaris_id === ""}
+<a href="/signup/4" class="btn btn-primary">철권 계정 연동하기</a>
+{/if}
 </div>
 
 

@@ -4,7 +4,7 @@ export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["dark", "sunset"],
-    default: "dark",
+    themes: ["sunset"],
+    default: "sunset",
   },
 } as Config;

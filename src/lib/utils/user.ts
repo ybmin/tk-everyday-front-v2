@@ -6,7 +6,8 @@ export interface User {
   steam_id: string;
   role: number;
   is_active: boolean;
-  tk_users: any[];
+  polaris_id: string;
+  tekken_users: any[];
   block_histories: any[];
 }
 

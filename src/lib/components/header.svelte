@@ -43,7 +43,7 @@
               </ul>
             </details>
           </li>
-          <summary>테마</summary>
+          <!-- <summary>테마</summary>
           <li class="join join-vertical">
             <input
             type="radio"
@@ -58,7 +58,7 @@
             aria-label="Sunset"
             value="sunset" />
         </li>
-        </ul>
+        </ul> -->
       </div>
       <a class="btn btn-ghost w-48 h-16 px-0" href="/">
         <WideLogo className="w-48 h-16"/>
@@ -77,16 +77,16 @@
           </details>
         </li>
         <li><a href="/tekkenUser/search">유저 검색</a></li>
-        <!-- <li><a>Item 3</a></li> -->
       </ul>
     </div>
     <div class="navbar-end">
       {#if user && user.nickname}
-        <a class="btn btn-active btn-secondary" href="/profile">{user?.nickname}</a>
+        <a class="btn btn-active btn-secondary mr-4" href="/profile">{user?.nickname}</a>
+        <a class="btn btn-active btn-primary" href="/logout">로그아웃</a>
       {:else}
       <a class="btn btn-active btn-primary" href="/login">로그인</a>
       {/if}
-        <div class="dropdown dropdown-end hidden lg:flex">
+        <!-- <div class="dropdown dropdown-end hidden lg:flex">
             <div tabindex="0" role="button" class="btn m-1">
             테마
             <svg
@@ -98,16 +98,7 @@
                 <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
             </svg>
             </div>
-        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
             <ul tabindex="0" class="dropdown-content bg-base-300 rounded-box z-50 w-52 p-2 overflow-y-auto shadow-2xl">
-                <!-- <li>
-                <input
-                    type="radio"
-                    name="theme-dropdown"
-                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    aria-label="Light"
-                    value="light" />
-                </li> -->
                 <li>
                 <input
                     type="radio"
@@ -116,14 +107,6 @@
                     aria-label="Dark"
                     value="dark" />
                 </li>
-                <!-- <li>
-                <input
-                    type="radio"
-                    name="theme-dropdown"
-                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    aria-label="Retro"
-                    value="retro" />
-                </li> -->
                 <li>
                 <input
                     type="radio"
@@ -133,6 +116,6 @@
                     value="sunset" />
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>

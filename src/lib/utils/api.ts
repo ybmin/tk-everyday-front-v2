@@ -27,7 +27,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   }
   if (!accessToken && refreshToken) {
     const response = await fetch("https://api.tk-everyday.site/token/refresh", {
-      ...options,
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${refreshToken}`,
@@ -55,7 +55,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
       const response = await fetch(
         "https://api.tk-everyday.site/token/refresh",
         {
-          ...options,
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${refreshToken}`,

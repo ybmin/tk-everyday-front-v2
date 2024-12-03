@@ -1,12 +1,17 @@
 <script lang="ts">
     import WideLogo from "../../assets/tk_ed_logo_wide.svelte";
-    import {getUser
+    import {clearUser, getUser
     } from "$lib/utils/user";
     import type {User} from "$lib/utils/user";
     import {onMount} from "svelte";
+  import { getAccessToken } from "$lib/utils/auth";
 
     let user: User | null = null;
     onMount(async () => {
+      const token = getAccessToken();
+      if (!token) {
+        clearUser();
+      }
       user = getUser();
     });
    

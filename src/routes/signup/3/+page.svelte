@@ -1,8 +1,10 @@
-<script>
-// @ts-nocheck
+<script lang="ts">
   import {onMount} from "svelte";
-  import { apiRequest } from "$lib/utils/api";
+  import { apiRequest, apiUpdateUser } from "$lib/utils/api";
   import { setTokens } from "$lib/utils/auth";
+  import { get } from "svelte/store";
+  import { getUser } from "$lib/utils/user";
+  import type { User } from "$lib/utils/user";
 
   let nickname = '';
   let email = '';
@@ -16,14 +18,48 @@
       setTokens(accessToken, refreshToken);
       const url = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, url);
+      await apiUpdateUser();
+      const user:User|null = getUser();
+      if (user && user.nickname) {
+        window.location.href = '/signup/4';
+      }
     }
   });
   async function handleSubmit() {
     const data = { nickname, email, password };
-
+    if (!nickname || !email || !password) {
+      alert('모든 정보를 입력해주세요.');
+      return;
+    }
+    if (!/^[A-Za-z0-9]{2,12}$/.test(nickname)) {
+      alert('닉네임은 2자이상 12자리 이하 영문과 숫자로 이루어져야 합니다.');
+      return;
+    } 
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/.test(password)) {
+      alert('비밀번호는 영문, 숫자, 특수기호를 모두 하나 이상 포함한 8자 이상 16자 이내로 이루어져야 합니다.');
+      return;
+    }
     try {
-      const response = await apiRequest('https://api.tk-everyday.site/auth/link/email', 'POST', JSON.stringify(data));
-      window.location.href = '/signup/4';
+      const response = await apiRequest('https://api.tk-everyday.site/auth/link/email', {
+        method: 'POST', 
+        body:
+          JSON.stringify(data),
+      });
+      if (response?.ok && response?.status === 200) {
+        window.location.href = '/signup/4';
+      }
+      else if (response?.status === 409){
+        const responseData = await response.json();
+        alert(responseData.msg);
+      }
+      else if (response?.status === 400){
+        alert('회원정보 수정에서 정보를 수정해주세요.');
+        window.location.href = '/';
+      }
+      else if (response?.status === 401){
+      alert('로그인이 필요합니다.');
+      window.location.href = '/login';
+      }
     } catch (error) {
       alert('로그인이 필요합니다.');
       window.location.href = '/login';
@@ -39,67 +75,73 @@
     <li class="step">회원가입 완료</li>
   </ul>
 <div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
-    <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
-        <h2 >기본 정보 입력</h2>
+  <div role="alert" class="alert alert-info">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      class="h-6 w-6 shrink-0 stroke-current">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span>닉네임은 한번 결정하면 수정이 불가능합니다.</span>
+  </div>
+  <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
+      <h2 >기본 정보 입력</h2>
 
-        <form on:submit|preventDefault={handleSubmit} class="form-control gap-8">
-          <label class="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              class="h-4 w-4 opacity-70">
-              <path
-                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input type="text" class="grow" placeholder="Nickname" on:change={(e)=>{
-              nickname = e.target.value;
-            }}
-            value={nickname}
-            />
-          </label>
-          <label class="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              class="h-4 w-4 opacity-70">
-              <path
-                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input type="email" class="grow" placeholder="Email" on:change={(e)=>{
-              email = e.target.value;
-            }}
-            value={email}
-            />
-          </label>
-          <label class="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              class="h-4 w-4 opacity-70">
-              <path
-                fill-rule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clip-rule="evenodd" />
-            </svg>
-            <input type="password" class="grow" placeholder="Password" on:change={(e)=>{
-              password = e.target.value;
-            }}
-            value={password}
-            />
-          </label>
-          <button type="submit" class="btn btn-primary">다음</button>
-        </form>
+      <form on:submit|preventDefault={handleSubmit} class="form-control gap-8">
+        <label class="input input-bordered flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-4 w-4 opacity-70">
+            <path
+              d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+          </svg>
+          <input type="text" class="grow" placeholder="Nickname" on:change={(e)=>{
+            nickname = (e.target as HTMLInputElement).value;
+          }}
+          value={nickname}
+          />
+        </label>
+        <label class="input input-bordered flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-4 w-4 opacity-70">
+            <path
+              d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+          </svg>
+          <input type="email" class="grow" placeholder="Email" on:change={(e)=>{
+            email = (e.target as HTMLInputElement).value;
+          }}
+          value={email}
+          />
+        </label>
+        <label class="input input-bordered flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-4 w-4 opacity-70">
+            <path
+              fill-rule="evenodd"
+              d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+              clip-rule="evenodd" />
+          </svg>
+          <input type="password" class="grow" placeholder="Password" on:change={(e)=>{
+            password = (e.target as HTMLInputElement).value;
+          }}
+          value={password}
+          />
+        </label>
+        <button type="submit" class="btn btn-primary">다음</button>
+      </form>
 
-        <!-- <div class="divider">Q&A</div>
-        <div class="collapse collapse-plus bg-base-200">
-            <input type="radio" name="my-accordion-3" />
-            <div class="collapse-title text-xl font-medium">왜 카카오로의 로그인만 가능한가요? </div>
-            <div class="collapse-content">
-              <p>1인 다중 계정 생성을 방지하기 위해 현재 카카오 연동을 통한 계정 생성만을 지원하고 있습니다.</p>
-            </div>
-          </div> -->
-    </div>
+  </div>
 </div>

@@ -4,7 +4,7 @@ import {
   setTokens,
   clearTokens,
 } from "./auth";
-import { saveUser } from "./user";
+import { clearUser, saveUser } from "./user";
 
 export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   const accessToken = getAccessToken();
@@ -89,6 +89,7 @@ export async function apiUpdateUser() {
     saveUser(data);
   } else {
     clearTokens();
+    clearUser();
     window.location.href = "/login";
     throw new Error("다시 로그인해주세요.");
   }

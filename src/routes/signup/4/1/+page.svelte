@@ -30,6 +30,9 @@
       alert("먼저 스팀 계정을 연동해주세요.");
       window.location.href = '/signup/3';
     }
+    else if (user.polaris_id){
+      window.location.href = '/signup/5';
+    }
   });
 </script>
 

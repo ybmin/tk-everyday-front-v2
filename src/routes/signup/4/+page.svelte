@@ -2,12 +2,20 @@
     import SteamLogo from "../../../assets/steam_logo.svelte";
     import {getAccessToken} from "$lib/utils/auth";
     import {onMount} from "svelte";
+    import { getUser, type User } from "$lib/utils/user";
+  import { apiUpdateUser } from "$lib/utils/api";
 
+    let user:User|null = null;
     let token:string|null = null;
     onMount(async () => {
         token = getAccessToken();
         if (!token) {
             window.location.href = "/login";
+        }
+        await apiUpdateUser();
+        user = getUser();
+        if(user && user.steam_id !== ""){
+            window.location.href = "/signup/4/1";
         }
     });
 </script>

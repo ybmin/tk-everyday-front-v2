@@ -1,10 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import {getRefreshToken,clearTokens } from "$lib/utils/auth";
-    import {clearUser} from "$lib/utils/user";
+    import {clearUser, getUser} from "$lib/utils/user";
   import { apiRequest } from '$lib/utils/api';
 
     onMount(async () => {
+        const user = getUser();
+        if(!user){
+            window.location.href = '/';
+        }
         const refreshToken = getRefreshToken();
         const response = await apiRequest(`https://api.tk-everyday.site/logout?refresh_token=${refreshToken}`, {
             method: 'POST'

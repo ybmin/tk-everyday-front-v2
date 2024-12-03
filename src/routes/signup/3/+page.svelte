@@ -75,7 +75,7 @@
     <li class="step">회원가입 완료</li>
   </ul>
 <div class="w-full content-center mt-16 mb-28 xl:mb-72 xl:mt-52">
-  <div role="alert" class="alert alert-info mx-20 mb-20">
+  <div role="alert" class="alert alert-info mb-20">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

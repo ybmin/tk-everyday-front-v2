@@ -7,9 +7,9 @@
     
     let user: User | null = null;
     onMount(async () => {
-        // await apiUpdateUser();
-        // user = getUser();
-        user = {"id":1,"nickname":"ybminm","email":"ybminm@kaist.ac.kr","kakao_id":"3703331366","steam_id":"asd","role":0,"is_active":true,"tekken_users":[],"block_histories":[]};
+        await apiUpdateUser();
+        user = getUser();
+        // user = {"id":1,"nickname":"ybminm","email":"ybminm@kaist.ac.kr","kakao_id":"3703331366","steam_id":"asd","role":0,"is_active":true,"tekken_users":[],"block_histories":[]};
     });
 </script>
 

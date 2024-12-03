@@ -10,11 +10,8 @@
       return;
     }
     if (user && user.steam_id !== ""){
-      const response = await apiRequest('https://api.tk-everyday.site/auth/link/polaris',{
-        method: 'POST',
-        body: JSON.stringify({
-          polaris_id: polaris_id,
-        }),
+      const response = await apiRequest(`https://api.tk-everyday.site/auth/link/polaris?polaris_id=${polaris_id}`,{
+        method: 'POST'
       });
       if (response?.ok) {
         alert("철권 계정 연동이 완료되었습니다.");

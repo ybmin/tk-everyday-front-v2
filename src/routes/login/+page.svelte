@@ -5,7 +5,7 @@
 <div class="w-full content-center my-28 xl:my-72">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <h2 >로그인</h2>
-        <a href="https://api.tk-everyday.site/auth/kakao" target="_blank" rel="noopener noreferrer" class="btn bg-[#FFEB00] text-[#3C1E1E] hover:bg-[#e6d700]">
+        <a href="https://api.tk-everyday.site/auth/kakao" class="btn bg-[#FFEB00] text-[#3C1E1E] hover:bg-[#e6d700]">
             <KakaoLogo width={20}/> 카카오로 로그인</a>
         <h4>계정이 없으신가요?  <a href="/signup" style="text-decoration:underline; color:white; ">회원가입</a></h4>
         <div class="divider">Q&A</div>

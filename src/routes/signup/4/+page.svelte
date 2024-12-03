@@ -31,7 +31,7 @@
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <h2 >(선택) 철권 계정 연동</h2>
         {#if token}
-        <a class="bg-black text-white btn btn-lg" href={`https://api.tk-everyday.site/auth/steam?token=${token}`} target="_blank" rel="noopener noreferrer">
+        <a class="bg-black text-white btn btn-lg" href={`https://api.tk-everyday.site/auth/steam?token=${token}`} >
             <SteamLogo className="w-6"/> 스팀 계정 연동하기</a>
         {/if}
             <span class="text-base-content/70 py-4 font-light md:text-base">스팀 계정을 연동하면, 철권 계정을 인증할 수 있습니다.</span>

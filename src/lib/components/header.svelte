@@ -1,9 +1,8 @@
 <script lang="ts">
-    import WideLogo from "../../assets/tk_ed_logo_wide.svelte";
-    import {clearUser, getUser
-    } from "$lib/utils/user";
-    import type {User} from "$lib/utils/user";
-    import {onMount} from "svelte";
+  import WideLogo from "../../assets/tk_ed_logo_wide.svelte";
+  import {clearUser, getUser} from "$lib/utils/user";
+  import type {User} from "$lib/utils/user";
+  import {onMount} from "svelte";
   import { getAccessToken } from "$lib/utils/auth";
 
     let user: User | null = null;
@@ -48,22 +47,14 @@
               </ul>
             </details>
           </li>
-          <!-- <summary>테마</summary>
-          <li class="join join-vertical">
-            <input
-            type="radio"
-            name="theme-buttons"
-            class="btn theme-controller join-item"
-            aria-label="Dark"
-            value="dark" />
-            <input
-            type="radio"
-            name="theme-buttons"
-            class="btn theme-controller join-item"
-            aria-label="Sunset"
-            value="sunset" />
-        </li>
-        </ul> -->
+          
+          {#if user && user.nickname}
+          <li>
+            <a href="/profile">{user?.nickname}</a>
+          </li>
+          {/if}
+          </ul>
+
       </div>
       <a class="btn btn-ghost w-48 h-16 px-0" href="/">
         <WideLogo className="w-48 h-16"/>
@@ -86,7 +77,7 @@
     </div>
     <div class="navbar-end">
       {#if user && user.nickname}
-        <a class="btn btn-active btn-secondary mr-4" href="/profile">{user?.nickname}</a>
+        <a class="btn btn-active btn-secondary mr-4 hidden lg:flex" href="/profile">{user?.nickname}</a>
         <a class="btn btn-active btn-primary" href="/logout">로그아웃</a>
       {:else}
       <a class="btn btn-active btn-primary" href="/login">로그인</a>

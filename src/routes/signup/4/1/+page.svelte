@@ -13,7 +13,7 @@
       const response = await apiRequest(`https://api.tk-everyday.site/auth/link/polaris?polaris_id=${polaris_id}`,{
         method: 'POST'
       });
-      if (response?.ok) {
+      if (response?.status === 200) {
         alert("철권 계정 연동이 완료되었습니다.");
         window.location.href = '/signup/5';
       } else {

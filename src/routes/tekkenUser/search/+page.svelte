@@ -62,7 +62,7 @@
                                 <div class="text-sm opacity-50">{item.polaris_id}</div>
                             </a>
                             {:else}
-                            <a href={`/users/${item.parent_user_id}`}>
+                            <a href={`/user/${item.parent_user_id}`}>
                                 <div class="font-bold">{item.nickname}</div>
                                 <div class="text-sm opacity-50">{item.polaris_id}</div>
                             </a>

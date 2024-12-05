@@ -10,20 +10,6 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@editorjs/delimiter": "^1.4.2",
-    "@editorjs/header": "^2.8.8",
-    "@editorjs/list": "^2.0.0",
-    "@editorjs/paragraph": "^2.11.6",
-    "@editorjs/text-variant-tune": "^1.0.3",
-    "@editorjs/warning": "^1.4.0",
-    "@lexical/dragon": "^0.20.0",
-    "@lexical/history": "^0.20.0",
-    "@lexical/rich-text": "^0.20.0",
-    "@lexical/utils": "^0.20.0",
-    "@milkdown/crepe": "^7.5.7",
-    "@milkdown/kit": "^7.5.5",
-    "@milkdown/plugin-emoji": "^7.5.0",
-    "@milkdown/theme-nord": "^7.5.0",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
@@ -48,8 +34,8 @@
     "@vtechguys/tiptap-emoji-picker": "^0.0.7",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.14",
-    "editorjs-undo": "^2.0.28",
-    "lexical": "^0.20.0",
+    "mdsvex": "^0.12.3",
+    "mdsvex-relative-images": "^1.0.3",
     "remark-directive": "^3.0.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
@@ -58,14 +44,7 @@
     "vite": "^5.0.3"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.30.7",
-    "@editorjs/embed": "^2.7.6",
-    "@editorjs/simple-image": "^1.6.0",
-    "@editorjs/table": "^2.4.2",
     "@sveltejs/adapter-node": "^5.2.9",
-    "editorjs-drag-drop": "^1.1.16",
-    "editorjs-header-with-anchor": "^2.6.0",
-    "editorjs-multiblock-selection-plugin": "^0.1.1",
     "svelte-routing": "^2.13.0"
   }
 }

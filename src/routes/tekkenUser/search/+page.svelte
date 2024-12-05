@@ -26,6 +26,12 @@
     );
 </script>
 
+<svelte:head>
+    <title>철권 랭크 유저 검색</title>
+    <meta property="og:title" content="철권 랭크 유저 검색" />
+    <meta property="og:description" content="철권 랭크 유저를 검색하세요" />
+</svelte:head>
+
 <div class="w-full content-center my-28">
     <div class="w-full p-6 m-auto bg-base-200 rounded-md shadow-md flex flex-col prose justify-center items-center lg:max-w-lg">
         <form class="input input-bordered flex items-center gap-2" on:submit|preventDefault={()=>fetchItems(searchQuery)}>

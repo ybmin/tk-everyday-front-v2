@@ -84,6 +84,12 @@
 
 </script>
 
+<svelte:head>
+    <title>{data? data.nickname:polarisId} - Tekken EveryDay</title>
+    <meta property="og:title" content="{data? data.nickname:polarisId} - Tekken EveryDay" />
+    <meta property="og:description" content="{data? data.nickname:polarisId}의 철권 8 전적을 확인하세요." />
+</svelte:head>
+
 
 {#if Loading}
 <div class="flex w-full flex-col gap-4 mx-10 my-20">

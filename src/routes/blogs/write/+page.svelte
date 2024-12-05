@@ -1,6 +1,6 @@
-<script>
-    import Editor from '$lib/components/editorV2.svelte';
+<!-- <script>
+    import Editor from '$lib/components/editorV2';
 </script>
 
 
-<Editor />
+<Editor /> -->

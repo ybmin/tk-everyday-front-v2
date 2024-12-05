@@ -37,8 +37,9 @@
           tabindex="0"
           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[50] mt-3 w-52 p-2 shadow">
           <li><a href="/info">정보</a></li>
+          <li><a href="/posts">공지 및 정보</a></li>
           <li><a href="/tekkenUser/search">유저 검색</a></li>
-          <li>
+          <!-- <li>
             <details>
               <summary>블로그</summary>
               <ul class="p-2">
@@ -46,7 +47,7 @@
                 <li><a href="/blogs/write">작성하기</a></li>
               </ul>
             </details>
-          </li>
+          </li> -->
           
           {#if user && user.nickname}
           <li>
@@ -63,7 +64,8 @@
     <div class="navbar-center hidden lg:flex px-0 z-50">
       <ul class="menu menu-horizontal px-1 ">
         <li><a href="/info">정보</a></li>
-        <li>
+        <li><a href="/posts">공지 및 정보</a></li>
+        <!-- <li>
           <details>
             <summary>블로그</summary>
             <ul class="p-2 z-50">
@@ -71,7 +73,7 @@
               <li><a href="/blogs/write">작성</a></li>
             </ul>
           </details>
-        </li>
+        </li> -->
         <li><a href="/tekkenUser/search">유저 검색</a></li>
       </ul>
     </div>
